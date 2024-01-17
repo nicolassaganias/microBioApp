@@ -43,46 +43,61 @@ void readInTemperature() {
 }
 
 void readCozir() {
-
   lastCO2[0] = czr[0].CO2() * 10; // * czr[0].getPPMFactor(); // add  * czr.getPPMFactor();  most of time PPM = one.
   lastCO2[1] = czr[1].CO2() * 100; // * czr[1].getPPMFactor(); // add  * czr.getPPMFactor();  most of time PPM = one.
+  lastCO2[2] = czr[2].CO2() * 10; // * czr[1].getPPMFactor(); // add  * czr.getPPMFactor();  most of time PPM = one.
 
   // curva calibracion sensor 1
-  
-  //  if (lastCO2[0] >= 250000) { // very high concentration
-  //    result1 = (float)lastCO2[0] * 1.0111 + 11184;
-  //  } else if (lastCO2[0] >= 1000 && lastCO2[0] < 250000) { // high concentration
+
+  result1 = (float)lastCO2[0] * 1.3667 - 11.86;
+
+  //  if (lastCO2[0] >= 1000 && lastCO2[0] < 250000) { // high concentration
   //    result1 = (float)lastCO2[0] * 0.9099 - 52.82;
   //  } else if (lastCO2[0] < 1000) { // low concentration
   //    result1 = (float)lastCO2[0] * 1.2287 - 683.17;
   //  }
 
-  result1 = (float)lastCO2[0] * 1.3409 - 230.59;
   if (result1 <= 0) {
     result1 = 0;
   }
 
   // curva calibracion sensor 2
-  if (lastCO2[1] >= 250000) { // very high concentration
-    result2 = (float)lastCO2[1] * 1.0111 + 11184;
-  } else if (lastCO2[1] >= 1500 && lastCO2[1] < 250000) { // high concentration
-    result2 = (float)lastCO2[1] * 0.9414 - 515.16;
-  } else if (lastCO2[1] < 1500) { // low concentration
-    result2 = (float)lastCO2[1] * 1.9354 - 1354.8;
-  }
+
+  result2 = (float)lastCO2[1] * 0.9099 + 242.34;
+
+  //  if (lastCO2[1] >= 250000) { // very high concentration
+  //    result2 = (float)lastCO2[1] * 1.0111 + 11184;
+  //  } else if (lastCO2[1] >= 1500 && lastCO2[1] < 250000) { // high concentration
+  //    result2 = (float)lastCO2[1] * 0.9414 - 515.16;
+  //  } else if (lastCO2[1] < 1500) { // low concentration
+  //    result2 = (float)lastCO2[1] * 1.9354 - 1354.8;
+  //  }
 
   if (result2 <= 0) {
     result2 = 0;
   }
 
+  // curva calibracion sensor 3
 
-  if (result1 >= result2) {
-    gasResult = result1 - result2;
+  result3 = (float)lastCO2[2] * 0.9734+180.75;
+
+  //  if (lastCO2[2] >= 1000 && lastCO2[0] < 250000) { // high concentration
+  //    result3 = (float)lastCO2[2] * 0.9099 - 52.82;
+  //  } else if (lastCO2[2] < 1000) { // low concentration
+  //    result3 = (float)lastCO2[2] * 1.2287 - 683.17;
+  //  }
+
+  if (result3 <= 0) {
+    result3 = 0;
+  }
+
+  if (result1 >= result3) {
+    gasResult = result1 - result3;
     if (gasResult <= 0) {
       gasResult = 0;
     }
   } else {
-    gasResult = result2 - result1;
+    gasResult = result3 - result1;
     if (gasResult <= 0) {
       gasResult = 0;
     }
